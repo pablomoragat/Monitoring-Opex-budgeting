@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-data = pd.read_excel("C:\\INICIO\\DUOC\\\PPTO2022.xlsx")
+data = pd.read_excel("C:\\INICIO\\DC\\\PPTO2022.xlsx")
 
 ##### cambio de  nombres, pro ejemplo se eliminan  campos con nombres compuestos onespacios a sin espacios
 data = data.rename(columns={"Centro de Costo": "CC", 
@@ -110,7 +110,7 @@ data_df.to_excel(filename)
 
 import pandas as pd
 
-comprometido = pd.read_excel("C:\\INICIO\\DUOC\\\Comprometidos.xlsx")
+comprometido = pd.read_excel("C:\\INICIO\\DC\\\Comprometidos.xlsx")
 
 comprometido_df=comprometido[[
 'Centro de coste',
@@ -192,7 +192,7 @@ comprometido_df['ID_NEW']=comprometido_df.CC.astype(str) +"-"+  comprometido_df.
      
      
 import pandas as pd
-reales = pd.read_excel("C:\\INICIO\\DUOC\\reales.xlsx")
+reales = pd.read_excel("C:\\INICIO\\DC\\reales.xlsx")
      
 
  #### selecionaremos variables de interes
