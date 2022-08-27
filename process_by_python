@@ -1,4 +1,4 @@
-
+"""
 import numpy as np
 import pandas as pd
 
@@ -152,6 +152,8 @@ comprometido_df['ID_NEW']=comprometido_df.CC.astype(str) +"-"+  comprometido_df.
      crosstb_comprometido['tipo'] = 'compromise'
      
       
+     crosstb_comprometido.dtypes   #### los campso tipo float debemos trasnfor a Int . 
+        
             """
             
       ####  crosstb_comprometido = crosstb_comprometido[['index2','1','2','3','4','5','6','7','8','9','10','11','12','tipo','CC','Clase']]
@@ -171,16 +173,60 @@ comprometido_df['ID_NEW']=comprometido_df.CC.astype(str) +"-"+  comprometido_df.
     """ 
     
     
+    #### construir nuevas variables acumalivas por mes aselantado al mes actual
+     
+     crosstb_comprometido['12M']= (crosstb_comprometido['1'] +  crosstb_comprometido['2'] + 
+                                  crosstb_comprometido['3'] +  crosstb_comprometido['4'] +  
+                                  crosstb_comprometido[int('5')] +  crosstb_comprometido[int('6')]+ 
+                                  crosstb_comprometido[int('7')] +  crosstb_comprometido[int('8')] + 
+                                  crosstb_comprometido[int('9')] +  crosstb_comprometido[int('10')] + 
+                                  crosstb_comprometido[int('11')] +  crosstb_comprometido[int('12')] )
+                                       
+     
+     crosstb_comprometido['11M']= (crosstb_comprometido['1'] +  crosstb_comprometido['2'] + 
+                                  crosstb_comprometido['3'] +  crosstb_comprometido['4'] +  
+                                  crosstb_comprometido[int('5')] +  crosstb_comprometido[int('6')]+ 
+                                  crosstb_comprometido[int('7')] +  crosstb_comprometido[int('8')] + 
+                                  crosstb_comprometido[int('9')] +  crosstb_comprometido[int('10')] + 
+                                  crosstb_comprometido[int('11')]  )
+     
+     
+     crosstb_comprometido['10M']= (crosstb_comprometido['1'] +  crosstb_comprometido['2'] + 
+                                  crosstb_comprometido['3'] +  crosstb_comprometido['4'] +  
+                                  crosstb_comprometido[int('5')] +  crosstb_comprometido[int('6')]+ 
+                                  crosstb_comprometido[int('7')] +  crosstb_comprometido[int('8')] + 
+                                  crosstb_comprometido[int('9')] +  crosstb_comprometido[int('10')]  )
+     
+     
+     
+     crosstb_comprometido['9M']= (crosstb_comprometido['1'] +  crosstb_comprometido['2'] + 
+                                  crosstb_comprometido['3'] +  crosstb_comprometido['4'] +  
+                                  crosstb_comprometido[int('5')] +  crosstb_comprometido[int('6')]+ 
+                                  crosstb_comprometido[int('7')] +  crosstb_comprometido[int('8')] + 
+                                  crosstb_comprometido[int('9')]  )
+     
+     
+     
+     crosstb_comprometido['8M']= (crosstb_comprometido['1'] +  crosstb_comprometido['2'] + 
+                                  crosstb_comprometido['3'] +  crosstb_comprometido['4'] +  
+                                  crosstb_comprometido[int('5')] +  crosstb_comprometido[int('6')]+ 
+                                  crosstb_comprometido[int('7')] +  crosstb_comprometido[int('8')] )
      
      
      
      
-       filename = 'C:\INICIO\DUOC/crosstb_comprometido.xls'
+             
+crosstb_comprometido= crosstb_comprometido[[ 'index2','CC','Clase','1','2','3','4',int('5'),int('6'),int('7'),int('8'),int('9'),int('10'),int('11'),int('12'),'12M','11M','10M','9M','8M','tipo',]]
+
+        
+     
+     
+       filename = 'C:\INICIO\DUOC\POWER_BI/comprometido.xls'
   crosstb_comprometido.to_excel(filename)
      #### Cambiar el orde de las columnas 
      
      
-     crosstb_comprometido = pd.read_excel("C:\\INICIO\\DUOC\\\crosstb_comprometido.xls")
+     crosstb_comprometido = pd.read_excel("C:\\INICIO\\DUOC\POWER_BI\comprometido.xls")
 
      ###################################### 
      
@@ -242,6 +288,49 @@ reales_df['ID_NEW']=reales_df.CC.astype(str) +"-"+  reales_df.Clase.astype(str)
      crosstb_reales['12'] = 0
      crosstb_reales['tipo'] = 'reales'
                
-       filename = 'C:\INICIO\DUOC/crosstb_comprometido.xls'
-  crosstb_comprometido.to_excel(filename)
+     
+        crosstb_reales.dtypes   #### los campso tipo float debemos trasnfor a Int . 
+     
+        #### construir nuevas variables acumalivas por mes aselantado al mes actual
+        
+        crosstb_reales['12M']= (crosstb_reales[int('1')] +  crosstb_reales[int('2')] + 
+                                crosstb_reales[int('3')] +  crosstb_reales[int('4')] +  
+                                crosstb_reales[int('5')] +  crosstb_reales[int('6')] + 
+                                crosstb_reales[int('7')] +  crosstb_reales[int('8')] + 
+                                crosstb_reales[('9')]    +  crosstb_reales[('10')]   + 
+                                crosstb_reales[('11')]   + crosstb_reales[('12')] )
+        
+        crosstb_reales['11M']= (crosstb_reales[int('1')] +  crosstb_reales[int('2')] + 
+                                crosstb_reales[int('3')] +  crosstb_reales[int('4')] +  
+                                crosstb_reales[int('5')] +  crosstb_reales[int('6')] + 
+                                crosstb_reales[int('7')] +  crosstb_reales[int('8')] + 
+                                crosstb_reales[('9')]    +  crosstb_reales[('10')]   + 
+                                crosstb_reales[('11')]  )
+        
+        crosstb_reales['10M']= (crosstb_reales[int('1')] +  crosstb_reales[int('2')] + 
+                                crosstb_reales[int('3')] +  crosstb_reales[int('4')] +  
+                                crosstb_reales[int('5')] +  crosstb_reales[int('6')] + 
+                                crosstb_reales[int('7')] +  crosstb_reales[int('8')] + 
+                                crosstb_reales[('9')]    +  crosstb_reales[('10')]   )
+        
+        
+        crosstb_reales['9M']= (crosstb_reales[int('1')] +  crosstb_reales[int('2')] + 
+                                crosstb_reales[int('3')] +  crosstb_reales[int('4')] +  
+                                crosstb_reales[int('5')] +  crosstb_reales[int('6')] + 
+                                crosstb_reales[int('7')] +  crosstb_reales[int('8')] + 
+                                crosstb_reales[('9')]  )
+        
+        
+        crosstb_reales['8M']= (crosstb_reales[int('1')] +  crosstb_reales[int('2')] + 
+                                crosstb_reales[int('3')] +  crosstb_reales[int('4')] +  
+                                crosstb_reales[int('5')] +  crosstb_reales[int('6')] + 
+                                crosstb_reales[int('7')] +  crosstb_reales[int('8')]  )
+        
+        
+crosstb_reales= crosstb_reales[[ 'index2','CC','Clase',int('1'),int('2'),int('3'),int('4'),int('5'),int('6'),int('7'),int('8'),'9','10','11','12','12M','11M','10M','9M','8M','tipo',]]
+
+        
+       filename = 'C:\INICIO\DC/POWER_BI/reales.xls'
+  crosstb_reales.to_excel(filename)
+  
   
