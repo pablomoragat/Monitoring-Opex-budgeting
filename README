@@ -1,0 +1,11 @@
+If you work with data and you must make changes to it, it is advisable to leave a trace of what is done,
+many times the data manipulation is done from Excel, making it difficult to modify the control of the process
+and increasing the risk of error, in addition to high costs. in processing time and worst... where blue screen or pc reboot becomes frequent :- (
+
+ For example, if you have a process where you need to change the structure from the original data, and you need to filter, remove data 
+ based on specific conditions, sort the file based on a date or other field, add variables, change formats, extract two data 
+ from a field and build new variables etc… so those must be executed at the program level in a structured way and the Python
+ tool allows successfully executing these processes and more. Not only do you save time in the execution of this type of process, 
+ but the risk of error will decrease by 100%. You will have total control in addition to learning a new technological tool.
+We will see an example where we will use Python to transform and modify different sources that must finally be joined as input
+in the construction of a Dashboard.
