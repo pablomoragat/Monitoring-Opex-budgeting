@@ -1,0 +1,247 @@
+
+import numpy as np
+import pandas as pd
+
+data = pd.read_excel("C:\\INICIO\\DUOC\\\PPTO2022.xlsx")
+
+##### cambio de  nombres, pro ejemplo se eliminan  campos con nombres compuestos onespacios a sin espacios
+data = data.rename(columns={"Centro de Costo": "CC", 
+                                                  "Cuenta de Mayor": "Clase", "Valor/Moneda objeto": "valor" })
+
+#### seleccionar solo las variables de interes (interes inicial)
+data_df=data[['CC', 'Nombre del Proyecto','Jefe de Proyecto', 'Area',
+      'Clase', 'Area',
+      '2022.01',       '2022.02',
+      '2022.03',      '2022.04', 
+      '2022.05',      '2022.06',
+      '2022.07',       '2022.08',
+      '2022.09',      '2022.10',
+      '2022.11',      '2022.12',
+      ]]
+
+#### revisemos la estructura de las variables 
+data_df.dtypes
+
+
+#### reemplacemos valores na por 0 
+data_df = data_df.fillna(0)
+
+
+
+#### modifiquemos los varoles que aparecen como texto.  Crearemos un ciclo por cada campo. 
+
+p={   '2022.01',      '2022.02',     '2022.03',
+     '2022.04',      '2022.05',     '2022.06',
+     '2022.07',      '2022.08',     '2022.09',
+     '2022.10',     '2022.11',     '2022.12',}
+
+for i in p: 
+
+    data_df[i]=np.where(data_df[i] =='$-', 0, data_df[i])
+    data_df[i]=np.where(data_df[i] ==' $- ', 0, data_df[i])
+    data_df[i]=np.where(data_df[i] =='   ', 0, data_df[i])
+    
+         
+    data_df['2022.01']=np.where(data_df['2022.01'] =='   ', 0, data_df['2022.01'])
+    
+    
+    
+ for i in p: 
+    data_df[i] = pd.to_numeric(data_df[i])
+        
+'''
+
+data_df['2022.01']=np.where(data_df['2022.01'] =='$-', 0, data_df['2022.01'])
+data_df['2022.01']=np.where(data_df['2022.01'] ==' $- ', 0, data_df['2022.01'])
+
+'''
+
+#### construir nuevas variables acumalivas por mes aselantado al mes actual
+
+
+   data_df['12M']= (data_df['2022.01'] +  data_df['2022.02'] + 
+                    data_df['2022.03'] +  data_df['2022.04'] +  
+                    data_df['2022.05'] +  data_df['2022.06'] + 
+                    data_df['2022.07'] +  data_df['2022.08'] + 
+                    data_df['2022.09'] +  data_df['2022.10'] + 
+                    data_df['2022.11'] +  data_df['2022.12'] )
+                                     
+   data_df['11M']=  (data_df['2022.01']+ data_df['2022.02']  +
+                    data_df['2022.03']+ data_df['2022.04']   +
+                    data_df['2022.05']+ data_df['2022.06']   + 
+                    data_df['2022.07']+ data_df['2022.08']   + 
+                    data_df['2022.09']+ data_df['2022.10']   + 
+                    data_df['2022.11']                       )
+
+   data_df['10M']= (data_df['2022.01']+ data_df['2022.02']   +
+                    data_df['2022.03']+ data_df['2022.04']   +   
+                    data_df['2022.05']+ data_df['2022.06']   + 
+                    data_df['2022.07']+ data_df['2022.08']   +   
+                    data_df['2022.09']+ data_df['2022.10']   ) 
+                                                                                                                                
+   data_df['9M']=  (data_df['2022.01']+ data_df['2022.02']   +
+                    data_df['2022.03']+ data_df['2022.04']   + 
+                    data_df['2022.05']+ data_df['2022.06']   + 
+                    data_df['2022.07']+ data_df['2022.08']   +
+                    data_df['2022.09']                       )                                       
+
+   data_df['8M']=  (data_df['2022.01']+ data_df['2022.02']   + 
+                   data_df['2022.03']+ data_df['2022.04']    + 
+                   data_df['2022.05']+ data_df['2022.06']    +
+                   data_df['2022.07']+ data_df['2022.08']    )
+                                                                              
+   
+#### revisemos los nuevos formatos de variables luego de los cambios y transformaciones 
+
+data_df.dtypes
+
+data_df['ID_NEW']=data_df.CC.astype(str) +"-"+  data_df.Clase.astype(str)
+
+filename = 'C:\INICIO\DUOC\POWER_BI\data_df.xls'
+data_df.to_excel(filename)
+
+
+###########################################################################
+##############                                            #################
+##############     INICIO CARGA ARCHIVO COMPROMETIDOS     #################
+##############                                            #################
+########################################################################### 
+
+
+import pandas as pd
+
+comprometido = pd.read_excel("C:\\INICIO\\DUOC\\\Comprometidos.xlsx")
+
+comprometido_df=comprometido[[
+'Centro de coste',
+'Clase de coste',
+'Valor/Moneda objeto',
+'Fecha de documento',
+'Período',
+'Fecha de cargo',
+'Usuario',
+'Descrip.clases coste',
+]]
+
+##### cambiamos los nombres con espacios a sin espacion 
+comprometido_df = comprometido_df.rename(columns={"Centro de coste": "CC", 
+                                                  "Clase de coste": "Clase", "Valor/Moneda objeto": "valor" })
+
+#### concatenaremos dos campos CC y Clase 
+
+comprometido_df['ID_NEW']=comprometido_df.CC.astype(str) +"-"+  comprometido_df.Clase.astype(str)
+
+    comprometido_df[['CC_','Clase_']]=comprometido_df.ID_NEW.str.split('-',expand=True)
+   
+    
+    crosstb_comprometido= pd.crosstab(index = comprometido_df['ID_NEW'],
+                       columns = comprometido_df['Período'],
+                       values=comprometido_df['valor'], aggfunc=sum)
+
+
+  crosstb_comprometido = crosstb_comprometido.fillna(0)
+   
+  crosstb_comprometido = crosstb_comprometido.rename_axis('index2').reset_index()
+  
+    crosstb_comprometido[['CC','Clase']]=crosstb_comprometido.index2.str.split('-',expand=True) 
+     
+     crosstb_comprometido['1'] = 0
+     crosstb_comprometido['2'] = 0
+     crosstb_comprometido['3'] = 0
+     crosstb_comprometido['4'] = 0
+     crosstb_comprometido['tipo'] = 'compromise'
+     
+      
+            """
+            
+      ####  crosstb_comprometido = crosstb_comprometido[['index2','1','2','3','4','5','6','7','8','9','10','11','12','tipo','CC','Clase']]
+     
+      #### ESTAN EN FORMATO STRING DEBEMOS CONVERTIR EN NUMERICAS
+        
+        q={   '1',      '2',     '3',
+             '4',      '4',     '6',
+             '7',      '8',     '9',
+             '9',     '11',     '12',}
+
+        for i in q: 
+         crosstb_comprometido[q] = pd.to_numeric(crosstb_comprometido[q])
+        
+       crosstb_comprometido['12M']=    crosstb_comprometido['1']+  crosstb_comprometido['2']   +  crosstb_comprometido['3']+  crosstb_comprometido['4'] +  crosstb_comprometido['4'] + crosstb_comprometido['6']+   crosstb_comprometido['7']+  crosstb_comprometido['8']+  crosstb_comprometido['9'] + crosstb_comprometido['10']  +  crosstb_comprometido['11']+   crosstb_comprometido['12']
+    
+    """ 
+    
+    
+     
+     
+     
+     
+       filename = 'C:\INICIO\DUOC/crosstb_comprometido.xls'
+  crosstb_comprometido.to_excel(filename)
+     #### Cambiar el orde de las columnas 
+     
+     
+     crosstb_comprometido = pd.read_excel("C:\\INICIO\\DUOC\\\crosstb_comprometido.xls")
+
+     ###################################### 
+     
+     ###########################################################################
+     ###############                                        ###################
+     ###############    INICIO CARGA ARCHIVO REAL           ###################
+     ###############                                        ###################
+     ############################################################################ 
+     
+     
+import pandas as pd
+reales = pd.read_excel("C:\\INICIO\\DUOC\\reales.xlsx")
+     
+
+ #### selecionaremos variables de interes
+ 
+reales_df=reales[[
+'Centro de coste',
+'Clase de coste',
+'Documento compras',
+'Valor variable/MI',
+'Usuario',
+'A período'   
+]]
+
+#### elminar registros con montos negativos
+
+reales_df = reales_df.drop(reales_df[reales_df['Valor variable/MI']<0].index)
+
+##### cambiar  los nombres compuestos ( eliminar espacios en blancos) 
+
+reales_df = reales_df.rename(columns={"Centro de coste": "CC", "A período":"periodo",
+                                                  "Clase de coste": "Clase", "Valor variable/MI": "valor" })
+
+
+
+reales_df['ID_NEW']=reales_df.CC.astype(str) +"-"+  reales_df.Clase.astype(str)
+
+
+
+
+    crosstb_reales= pd.crosstab(index = reales_df['ID_NEW'],
+                       columns = reales_df['periodo'],
+                       values=reales_df['valor'], aggfunc=sum)
+
+   crosstb_reales = crosstb_reales.fillna(0)
+
+
+   crosstb_reales = crosstb_reales.rename_axis('index2').reset_index()
+  
+    crosstb_reales[['CC','Clase']]=crosstb_reales.index2.str.split('-',expand=True) 
+    
+    
+  #### añadir las columnas faltantes 
+  
+     crosstb_reales['9'] = 0
+     crosstb_reales['10'] = 0
+     crosstb_reales['11'] = 0
+     crosstb_reales['12'] = 0
+     crosstb_reales['tipo'] = 'reales'
+               
+       filename = 'C:\INICIO\DUOC/crosstb_comprometido.xls'
+  crosstb_comprometido.to_excel(filename)
+  
